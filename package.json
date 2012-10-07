@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "author": "David Chambers <dc@hashify.me>",
   "keywords": ["pubsub", "publish", "subscribe", "broadcast", "message"],
+  "main": "./lib/airwaves",
   "repository": {
     "type": "git",
     "url": "https://github.com/davidchambers/airwaves"

@@ -123,11 +123,6 @@ channel.intercept "move", (broadcast, move) ->
 
 ---
 
-### Compiling
-
-    make setup
-    make > /path/to/airwaves.js
-
 ### Testing
 
     make setup

@@ -1,7 +1,7 @@
 .PHONY: compile setup test
 
 compile:
-	@./node_modules/coffee-script/bin/coffee --compile --print airwaves
+	@./node_modules/coffee-script/bin/coffee --compile --output lib src/airwaves
 
 setup:
 	@npm install
