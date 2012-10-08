@@ -1,6 +1,6 @@
 {
   "name": "airwaves",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "David Chambers <dc@hashify.me>",
   "keywords": ["pubsub", "publish", "subscribe", "broadcast", "message"],
   "main": "./lib/airwaves",
