@@ -123,6 +123,22 @@ channel.intercept "move", (broadcast, move) ->
 
 ---
 
+### Event names
+
+Airwaves supports comma-separated event names, so the following snippets
+are equivalent:
+
+```coffeescript
+channel.subscribe 'numerator-change', calculate
+channel.subscribe 'denominator-change', calculate
+```
+```coffeescript
+channel.subscribe 'numerator-change, denominator-change', calculate
+```
+
+More accurately, event names are delimited by `[,\s]+` (thus cannot contain
+commas or whitespace).
+
 ### Testing
 
     make setup
