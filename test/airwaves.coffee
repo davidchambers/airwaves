@@ -184,3 +184,17 @@ describe 'airwaves', ->
     channel.broadcast 's'
     channel.broadcast 't'
     count.should.equal 8
+
+  it 'coerces event names to strings', ->
+    count = 0
+    channel = new Channel
+    channel.subscribe 1/0, -> count += 1
+    channel.broadcast 1/0
+    count.should.equal 1
+    channel.broadcast 'Infinity'
+    count.should.equal 2
+    channel.subscribe ['x', 'y'], -> count += 1
+    channel.broadcast 'x'
+    count.should.equal 3
+    channel.broadcast 'y'
+    count.should.equal 4

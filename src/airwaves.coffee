@@ -13,7 +13,7 @@ remove = (array, value) ->
 
 split = (fn) ->
   (names, args...) ->
-    fn.call this, (n for n in names.split(/[,\s]+/) when n), args...
+    fn.call this, (n for n in "#{names}".split(/[,\s]+/) when n), args...
 
 class Channel
   constructor: ->
@@ -51,6 +51,6 @@ class Channel
       try next args... finally @stack.pop()
     return
 
-airwaves = {Channel, version: '0.2.0'}
+airwaves = {Channel, version: '0.2.1'}
 if typeof module isnt 'undefined' then module.exports = airwaves
 else window.airwaves = airwaves
