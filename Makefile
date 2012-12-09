@@ -1,7 +1,9 @@
 .PHONY: compile clean setup test
 
+bin = node_modules/.bin
+
 compile:
-	@node_modules/coffee-script/bin/coffee --compile --output lib src
+	@$(bin)/coffee --compile --output lib src
 
 clean:
 	@rm -rf node_modules
@@ -11,4 +13,4 @@ setup:
 	@npm install
 
 test:
-	@node_modules/mocha/bin/mocha test --compilers coffee:coffee-script --reporter spec
+	@$(bin)/mocha test --compilers coffee:coffee-script --reporter spec
