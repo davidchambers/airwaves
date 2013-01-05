@@ -6,7 +6,7 @@
   "main": "./lib/airwaves",
   "repository": {
     "type": "git",
-    "url": "https://github.com/davidchambers/airwaves"
+    "url": "git://github.com/davidchambers/airwaves.git"
   },
   "devDependencies": {
     "coffee-script": "1.4.x",
