@@ -198,3 +198,7 @@ describe 'airwaves', ->
     count.should.equal 3
     channel.broadcast 'y'
     count.should.equal 4
+
+  it 'lets property names of Object.prototype be used as event names', ->
+    channel = new Channel
+    channel.subscribe 'hasOwnProperty', ->

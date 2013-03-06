@@ -15,18 +15,21 @@ split = (fn) ->
   (names, args...) ->
     fn.call this, (n for n in "#{names}".split(/[,\s]+/) when n), args...
 
+subscribe = (propertyName) ->
+  (names, fn) ->
+    for name in names
+      unless Object::hasOwnProperty.call @subscriptions, name
+        @subscriptions[name] = ints: [], subs: []
+      @subscriptions[name][propertyName].push fn
+    return
+
 class Channel
   constructor: ->
     @subscriptions = {}
     @stack = []
 
-  intercept: split (names, fn) ->
-    (@subscriptions[n] or= ints: [], subs: []).ints.push fn for n in names
-    return
-
-  subscribe: split (names, fn) ->
-    (@subscriptions[n] or= ints: [], subs: []).subs.push fn for n in names
-    return
+  intercept: split subscribe 'ints'
+  subscribe: split subscribe 'subs'
 
   unsubscribe: split (names, fn) ->
     for name in names
