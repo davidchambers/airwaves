@@ -54,6 +54,6 @@ class Channel
       try next args... finally @stack.pop()
     return
 
-airwaves = {Channel, version: '0.2.1'}
+airwaves = {Channel, version: '0.2.2'}
 if typeof module isnt 'undefined' then module.exports = airwaves
 else window.airwaves = airwaves

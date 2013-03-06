@@ -1,6 +1,6 @@
 {
   "name": "airwaves",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "author": "David Chambers <dc@hashify.me>",
   "keywords": ["pubsub", "publish", "subscribe", "broadcast", "message"],
   "main": "./lib/airwaves",
@@ -9,8 +9,8 @@
     "url": "git://github.com/davidchambers/airwaves.git"
   },
   "devDependencies": {
-    "coffee-script": "1.4.x",
-    "mocha": "1.7.x",
+    "coffee-script": "1.6.x",
+    "mocha": "1.8.x",
     "should": "1.2.x"
   }
 }
