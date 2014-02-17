@@ -1,13 +1,19 @@
-bin = node_modules/.bin
+COFFEE = node_modules/.bin/coffee
+MOCHA = node_modules/.bin/mocha --compilers coffee:coffee-script
+
+JS_FILES = $(patsubst src/%.coffee,lib/%.js,$(shell find src -type f))
 
 
-lib/airwaves.js: src/airwaves.coffee
-	@cat $< | $(bin)/coffee --compile --stdio > $@
+.PHONY: all
+all: $(JS_FILES)
+
+lib/%.js: src/%.coffee
+	@cat $< | $(COFFEE) --compile --stdio > $@
 
 
 .PHONY: clean
 clean:
-	@rm -rf lib/*
+	@rm -f -- $(JS_FILES)
 	@rm -rf node_modules
 
 
@@ -30,4 +36,4 @@ setup:
 
 .PHONY: test
 test:
-	@$(bin)/mocha test --compilers coffee:coffee-script
+	@$(MOCHA)
