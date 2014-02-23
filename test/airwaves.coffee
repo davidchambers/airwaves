@@ -1,5 +1,9 @@
-assert    = require 'should'
+assert    = require 'assert'
 {Channel} = require '..'
+
+
+eq = assert.strictEqual
+
 
 describe 'airwaves', ->
 
@@ -7,20 +11,20 @@ describe 'airwaves', ->
     count = 0
     bbc = new Channel
     bbc.subscribe 'news', ({name, desc}) ->
-      name.should.equal 'World Business Report'
-      desc.should.equal 'The latest business and finance news from around the world.'
+      eq name, 'World Business Report'
+      eq desc, 'The latest business and finance news from around the world.'
       count += 1
     bbc.broadcast 'news',
       name: 'World Business Report'
       desc: 'The latest business and finance news from around the world.'
-    count.should.equal 1
+    eq count, 1
 
   it 'lets any number of values be broadcast', ->
     channel = new Channel
-    channel.subscribe '0', (args...) -> args.length.should.equal 0
-    channel.subscribe '1', (args...) -> args.length.should.equal 1
-    channel.subscribe '2', (args...) -> args.length.should.equal 2
-    channel.subscribe '3', (args...) -> args.length.should.equal 3
+    channel.subscribe '0', (args...) -> eq args.length, 0
+    channel.subscribe '1', (args...) -> eq args.length, 1
+    channel.subscribe '2', (args...) -> eq args.length, 2
+    channel.subscribe '3', (args...) -> eq args.length, 3
     channel.broadcast '0'
     channel.broadcast '1', 1
     channel.broadcast '2', 1, 2
@@ -29,14 +33,14 @@ describe 'airwaves', ->
   it 'lets any value be broadcast', ->
     channel = new Channel
     channel.subscribe 'x', (a, b, f, n, o, s, u, x) ->
-      a.should.equal _a
-      b.should.equal false
-      f.should.equal _f
-      n.should.equal Infinity
-      o.should.equal _o
-      s.should.equal ''
-      (u is undefined).should.be.true
-      (x is null).should.be.true
+      eq a, _a
+      eq b, false
+      eq f, _f
+      eq n, Infinity
+      eq o, _o
+      eq s, ''
+      eq u, undefined
+      eq x, null
     _a = [1, 2, 3]
     _b = false
     _f = ->
@@ -51,15 +55,15 @@ describe 'airwaves', ->
     count = 0
     channel = new Channel
     channel.broadcast 'x'
-    count.should.equal 0
+    eq count, 0
     channel.subscribe 'x', -> count += 1
     channel.broadcast 'x'
-    count.should.equal 1
+    eq count, 1
     channel.broadcast 'x'
-    count.should.equal 2
+    eq count, 2
     channel.subscribe 'x', -> count += 1
     channel.broadcast 'x'
-    count.should.equal 4
+    eq count, 4
 
   it 'uses a dedicated frequency for each channel’s broadcasts', ->
     hour = 0
@@ -68,42 +72,42 @@ describe 'airwaves', ->
     channel1.subscribe 'news', (h) -> hour = h
     channel2.subscribe 'news', (h) -> throw new Error 'oops!'
     channel1.broadcast 'news', 18
-    hour.should.equal 18
+    eq hour, 18
 
   it 'notifies subscribers in the order in which they subscribed', ->
     count = 0
     channel = new Channel
-    channel.subscribe 'x', -> count.should.equal 0; count += 1
-    channel.subscribe 'x', -> count.should.equal 1; count += 1
-    channel.subscribe 'x', -> count.should.equal 2; count += 1
-    channel.subscribe 'x', -> count.should.equal 3; count += 1
+    channel.subscribe 'x', -> eq count, 0; count += 1
+    channel.subscribe 'x', -> eq count, 1; count += 1
+    channel.subscribe 'x', -> eq count, 2; count += 1
+    channel.subscribe 'x', -> eq count, 3; count += 1
     channel.broadcast 'x'
-    count.should.equal 4
+    eq count, 4
 
   it 'provides an "intercept" method', ->
     count = 0
     channel = new Channel
     channel.intercept 'x', -> count += 1
     channel.broadcast 'x'
-    count.should.equal 1
+    eq count, 1
 
   it 'notifies interceptors in the order in which they subscribed', ->
     count = 0
     channel = new Channel
-    channel.intercept 'x', (bc) -> count.should.equal 0; count += 1; bc()
-    channel.intercept 'x', (bc) -> count.should.equal 1; count += 1; bc()
-    channel.intercept 'x', (bc) -> count.should.equal 2; count += 1; bc()
-    channel.intercept 'x', (bc) -> count.should.equal 3; count += 1; bc()
+    channel.intercept 'x', (broadcast) -> eq count, 0; count += 1; broadcast()
+    channel.intercept 'x', (broadcast) -> eq count, 1; count += 1; broadcast()
+    channel.intercept 'x', (broadcast) -> eq count, 2; count += 1; broadcast()
+    channel.intercept 'x', (broadcast) -> eq count, 3; count += 1; broadcast()
     channel.broadcast 'x'
-    count.should.equal 4
+    eq count, 4
 
   it 'lets an interceptor modify a broadcast', ->
     channel = new Channel
-    channel.intercept 'x', (broadcast, n) -> n.should.equal 0; broadcast n + 1
-    channel.intercept 'x', (broadcast, n) -> n.should.equal 1; broadcast n + 1
-    channel.intercept 'x', (broadcast, n) -> n.should.equal 2; broadcast n + 1
-    channel.intercept 'x', (broadcast, n) -> n.should.equal 3; broadcast n + 1
-    channel.subscribe 'x', (n) -> n.should.equal 4
+    channel.intercept 'x', (broadcast, n) -> eq n, 0; broadcast n + 1
+    channel.intercept 'x', (broadcast, n) -> eq n, 1; broadcast n + 1
+    channel.intercept 'x', (broadcast, n) -> eq n, 2; broadcast n + 1
+    channel.intercept 'x', (broadcast, n) -> eq n, 3; broadcast n + 1
+    channel.subscribe 'x', (n) -> eq n, 4
     channel.broadcast 'x', 0
 
   it 'lets an interceptor cancel a broadcast', ->
@@ -115,7 +119,7 @@ describe 'airwaves', ->
     channel.intercept 'x', -> throw new Error 'oops!'
     channel.subscribe 'x', -> throw new Error 'oops!'
     channel.broadcast 'x'
-    count.should.equal 3
+    eq count, 3
 
   it 'allows a single subscription to a broadcast to be cancelled', ->
     count = 0
@@ -125,10 +129,10 @@ describe 'airwaves', ->
     channel.subscribe 'x', add1
     channel.subscribe 'x', add2
     channel.broadcast 'x'
-    count.should.equal 3
+    eq count, 3
     channel.unsubscribe 'x', add1
     channel.broadcast 'x'
-    count.should.equal 5
+    eq count, 5
 
   it 'allows all subscriptions to a broadcast to be cancelled', ->
     count = 0
@@ -136,10 +140,10 @@ describe 'airwaves', ->
     channel.intercept 'x', (broadcast) -> count += 1; broadcast()
     channel.subscribe 'x', -> count += 1
     channel.broadcast 'x'
-    count.should.equal 2
+    eq count, 2
     channel.unsubscribe 'x'
     channel.broadcast 'x'
-    count.should.equal 2
+    eq count, 2
 
   it 'prevents infinite loops', ->
     count = 0
@@ -147,7 +151,7 @@ describe 'airwaves', ->
     channel.subscribe 'x', -> count += 1; channel.broadcast 'y'
     channel.subscribe 'y', -> count += 1; channel.broadcast 'x'
     channel.broadcast 'x'
-    count.should.equal 2
+    eq count, 2
 
   it 'clears the internal stack if there’s an uncaught exception', ->
     count = 0
@@ -155,9 +159,9 @@ describe 'airwaves', ->
     channel.subscribe 'x', -> count += 1
     channel.subscribe 'x', -> throw new Error
     try channel.broadcast 'x' catch err
-    count.should.equal 1
+    eq count, 1
     try channel.broadcast 'x' catch err
-    count.should.equal 2
+    eq count, 2
 
   it 'supports comma-separated event names', ->
     count = 0
@@ -165,39 +169,39 @@ describe 'airwaves', ->
     # intercept
     channel.intercept 'i, j', -> count += 1
     channel.broadcast 'i'
-    count.should.equal 1
+    eq count, 1
     channel.broadcast 'j'
-    count.should.equal 2
+    eq count, 2
     # subscribe
     channel.subscribe 's, t', -> count += 1
     channel.broadcast 's'
-    count.should.equal 3
+    eq count, 3
     channel.broadcast 't'
-    count.should.equal 4
+    eq count, 4
     # broadcast
     channel.broadcast 'i, j, s, t'
-    count.should.equal 8
+    eq count, 8
     # unsubscribe
     channel.unsubscribe 'i, j, s, t'
     channel.broadcast 'i'
     channel.broadcast 'j'
     channel.broadcast 's'
     channel.broadcast 't'
-    count.should.equal 8
+    eq count, 8
 
   it 'coerces event names to strings', ->
     count = 0
     channel = new Channel
     channel.subscribe 1/0, -> count += 1
     channel.broadcast 1/0
-    count.should.equal 1
+    eq count, 1
     channel.broadcast 'Infinity'
-    count.should.equal 2
+    eq count, 2
     channel.subscribe ['x', 'y'], -> count += 1
     channel.broadcast 'x'
-    count.should.equal 3
+    eq count, 3
     channel.broadcast 'y'
-    count.should.equal 4
+    eq count, 4
 
   it 'lets property names of Object.prototype be used as event names', ->
     channel = new Channel
