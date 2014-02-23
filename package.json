@@ -9,7 +9,7 @@
     "url": "git://github.com/davidchambers/airwaves.git"
   },
   "devDependencies": {
-    "coffee-script": "1.6.x",
+    "coffee-script": "1.7.x",
     "mocha": "1.8.x",
     "semver": "2.2.x"
   }
