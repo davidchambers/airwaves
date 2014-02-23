@@ -2,7 +2,7 @@
        ( ( ( ( ( airwaves ) ) ) ) )
 
     Broadcast on a dedicated frequency
-      Copyright 2012, David Chambers
+   Copyright 2012..2014, David Chambers
 ###
 
 remove = (array, value) ->
