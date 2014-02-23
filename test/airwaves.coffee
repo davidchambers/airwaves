@@ -1,5 +1,5 @@
 assert    = require 'should'
-{Channel} = require '../src/airwaves'
+{Channel} = require '..'
 
 describe 'airwaves', ->
 
