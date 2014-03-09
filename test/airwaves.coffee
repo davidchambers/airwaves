@@ -145,6 +145,10 @@ describe 'airwaves', ->
     channel.broadcast 'x'
     eq count, 2
 
+  it 'allows a subscription to an undefined broadcast to be cancelled', ->
+    channel = new Channel
+    channel.unsubscribe 'x', ->
+
   it 'prevents infinite loops', ->
     count = 0
     channel = new Channel
@@ -188,6 +192,11 @@ describe 'airwaves', ->
     channel.broadcast 's'
     channel.broadcast 't'
     eq count, 8
+
+  it 'adds no subscribers when given the empty string', ->
+    channel = new Channel
+    channel.subscribe '', ->
+    eq Object.keys(channel.subscriptions).length, 0
 
   it 'coerces event names to strings', ->
     count = 0

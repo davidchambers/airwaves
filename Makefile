@@ -9,7 +9,9 @@ JS_FILES = $(patsubst src/%.coffee,lib/%.js,$(shell find src -type f))
 all: $(JS_FILES)
 
 lib/%.js: src/%.coffee
-	$(COFFEE) --compile --output $(@D) -- $<
+	mkdir -p $(@D)
+	$(COFFEE) --compile --print -- $< | \
+		sed -e 's!\(__indexOf = .* ||\)!\1 /* istanbul ignore next */!' -e "s!'\(istanbul .*\)';!/* \1 */!" >$@
 
 
 .PHONY: clean

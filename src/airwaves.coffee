@@ -55,6 +55,7 @@ class Channel
     return
 
 airwaves = {Channel, version: '0.2.2'}
+'istanbul ignore next'
 if typeof module isnt 'undefined' then module.exports = airwaves
 else if typeof define is 'function' and define.amd then define airwaves
 else window.airwaves = airwaves
