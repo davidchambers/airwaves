@@ -54,7 +54,7 @@ class Channel
       try next args... finally @stack.pop()
     return
 
-airwaves = {Channel, version: '0.2.2'}
+airwaves = {Channel, version: '0.3.0'}
 'istanbul ignore next'
 if typeof module isnt 'undefined' then module.exports = airwaves
 else if typeof define is 'function' and define.amd then define airwaves
