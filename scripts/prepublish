@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -e
+
+sed -i '' "s/version: '[^']*'/version: '$VERSION'/" src/airwaves.coffee
+git add                                             src/airwaves.coffee
+
+rm -f                                   lib/airwaves.js
+make                                    lib/airwaves.js
+git update-index --no-assume-unchanged  lib/airwaves.js
+git add                                 lib/airwaves.js
+git update-index --assume-unchanged     lib/airwaves.js

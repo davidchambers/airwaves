@@ -1,12 +1,13 @@
 COFFEE = node_modules/.bin/coffee
 ISTANBUL = node_modules/.bin/istanbul
-SEMVER = node_modules/.bin/semver
+XYZ = node_modules/.bin/xyz --message X.Y.Z --tag X.Y.Z --repo git@github.com:davidchambers/airwaves.git --script scripts/prepublish
 
-JS_FILES = $(patsubst src/%.coffee,lib/%.js,$(shell find src -type f))
+SRC = $(shell find src -name '*.coffee')
+LIB = $(patsubst src/%.coffee,lib/%.js,$(SRC))
 
 
 .PHONY: all
-all: $(JS_FILES)
+all: $(LIB)
 
 lib/%.js: src/%.coffee
 	mkdir -p $(@D)
@@ -16,31 +17,23 @@ lib/%.js: src/%.coffee
 
 .PHONY: clean
 clean:
-	rm -f -- $(JS_FILES)
+	rm -f -- $(LIB)
 
 
-.PHONY: release-patch release-minor release-major
-VERSION = $(shell node -p 'require("./package.json").version')
-release-patch: NEXT_VERSION = $(shell $(SEMVER) -i patch $(VERSION))
-release-minor: NEXT_VERSION = $(shell $(SEMVER) -i minor $(VERSION))
-release-major: NEXT_VERSION = $(shell $(SEMVER) -i major $(VERSION))
-release-patch: release
-release-minor: release
-release-major: release
+.PHONY: release-major release-minor release-patch
+release-major: LEVEL = major
+release-minor: LEVEL = minor
+release-patch: LEVEL = patch
 
-.PHONY: release
-release:
-	sed -i '' 's/"version": "[^"]*"/"version": "$(NEXT_VERSION)"/' package.json
-	sed -i '' "s/, version: '[^']*'/, version: '$(NEXT_VERSION)'/" src/airwaves.coffee
-	make
-	git commit --all --message $(NEXT_VERSION)
-	git tag $(NEXT_VERSION)
-	@echo 'remember to run `npm publish`'
+release-major release-minor release-patch:
+	@$(XYZ) --increment $(LEVEL)
 
 
 .PHONY: setup
 setup:
 	npm install
+	make clean
+	git update-index --assume-unchanged -- $(LIB)
 
 
 .PHONY: test
